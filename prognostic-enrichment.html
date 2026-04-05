@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prognostic Enrichment & PRS — Helix Life Sciences</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green:      #439c39;
+  --green-dark: #33772c;
+  --green-lt:   #edf8ec;
+  --green-10:   rgba(67,156,57,0.10);
+  --navy:       #3f4c78;
+  --navy-lt:    #5b6a99;
+  --muted-fg:   #5d688c;
+  --muted-bg:   #f2f4f6;
+  --border:     #e0e3ea;
+  --pink:       #f45b83;
+  --white:      #ffffff;
+  --r:          8px;
+  --r-xl:       12px;
+  --r-2xl:      16px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter',system-ui,sans-serif; color:var(--muted-fg); background:var(--white); font-size:16px; line-height:1.6; }
+
+/* ── NAV ── */
+header {
+  position:fixed; top:0; left:0; right:0; z-index:50;
+  height:96px; background:rgba(255,255,255,0.95); backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border); display:flex; align-items:center; padding:0 32px;
+}
+.nav-inner { max-width:1400px; margin:0 auto; width:100%; display:flex; align-items:center; justify-content:space-between; }
+.nav-logo { font-size:22px; font-weight:900; color:var(--navy); text-decoration:none; letter-spacing:-0.5px; }
+.nav-logo span { color:var(--green); }
+.nav-links { display:flex; gap:4px; list-style:none; }
+.nav-links a { font-size:17px; font-weight:500; color:rgba(63,76,120,0.8); text-decoration:none; padding:8px 16px; border-radius:6px; }
+.nav-links a:hover { color:var(--green); background:var(--muted-bg); }
+.nav-links a.active { color:var(--navy); font-weight:600; }
+.nav-actions { display:flex; gap:12px; align-items:center; }
+.btn-nav { font-size:15px; font-weight:600; color:white; background:var(--navy); text-decoration:none; padding:10px 22px; border-radius:var(--r); }
+.btn-nav:hover { background:var(--navy-lt); }
+
+/* ── SHARED ── */
+.container { max-width:1400px; margin:0 auto; padding:0 32px; }
+section { padding:100px 32px; }
+.eyebrow-sm {
+  display:inline-block; font-size:12px; font-weight:600; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--green); background:var(--green-10);
+  padding:6px 14px; border-radius:9999px; margin-bottom:20px;
+}
+h1 { font-size:clamp(34px,4vw,52px); font-weight:700; color:var(--navy); line-height:1.08; letter-spacing:-.03em; margin-bottom:24px; }
+h2 { font-size:clamp(26px,3vw,44px); font-weight:700; color:var(--navy); letter-spacing:-.025em; line-height:1.1; margin-bottom:16px; }
+h3 { font-size:18px; font-weight:700; color:var(--navy); margin-bottom:6px; }
+.lead { font-size:18px; color:var(--muted-fg); line-height:1.7; margin-bottom:24px; }
+.pink { color:var(--pink); }
+.teal { color:var(--green); }
+
+/* ── HERO ── */
+#hero {
+  padding-top:160px; padding-bottom:100px;
+  background:linear-gradient(180deg, rgba(242,244,246,0.6) 0%, rgba(255,255,255,0) 60%);
+}
+.hero-grid { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+.breadcrumb { font-size:13px; color:var(--muted-fg); margin-bottom:28px; display:flex; gap:6px; align-items:center; }
+.breadcrumb a { color:var(--muted-fg); text-decoration:none; }
+.breadcrumb a:hover { color:var(--green); }
+.breadcrumb span { color:var(--navy); font-weight:500; }
+.hero-body { font-size:18px; color:var(--muted-fg); line-height:1.7; margin-bottom:28px; }
+.hero-bullets { list-style:none; display:flex; flex-direction:column; gap:14px; }
+.hero-bullets li { display:flex; gap:12px; align-items:flex-start; font-size:15px; color:var(--navy); font-weight:500; line-height:1.5; }
+.hero-bullets li svg { flex-shrink:0; margin-top:2px; }
+
+/* ── HERO GRAPHIC ── */
+.hero-graphic {
+  background:white;
+  border-radius:var(--r-2xl);
+  border:1px solid var(--border);
+  box-shadow:0 8px 40px rgba(63,76,120,0.10);
+  overflow:hidden;
+}
+.hg-header {
+  background:var(--navy);
+  padding:18px 22px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.hg-title { font-size:13px; font-weight:700; color:white; letter-spacing:.02em; }
+.hg-badge { font-size:10px; font-weight:600; background:rgba(255,255,255,0.15); color:white; padding:3px 10px; border-radius:9999px; }
+.hg-body { padding:22px; }
+.hg-chart-label { font-size:10px; font-weight:600; color:var(--muted-fg); letter-spacing:.06em; text-transform:uppercase; margin-bottom:12px; }
+.hg-chart { display:flex; align-items:flex-end; gap:5px; height:80px; margin-bottom:8px; }
+.bar { border-radius:4px 4px 0 0; flex:1; min-height:6px; }
+.bar.lo  { background:var(--border); }
+.bar.md  { background:rgba(67,156,57,0.35); }
+.bar.hi  { background:var(--green); }
+.hg-axis { display:flex; justify-content:space-between; font-size:10px; color:var(--muted-fg); margin-bottom:18px; }
+.hg-divider { border:none; border-top:1px solid var(--border); margin-bottom:18px; }
+.hg-stats { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px; }
+.hg-stat { background:var(--muted-bg); border-radius:var(--r-xl); padding:14px 16px; }
+.hg-stat .n { font-size:26px; font-weight:800; color:var(--green); letter-spacing:-.03em; line-height:1; }
+.hg-stat .d { font-size:11px; color:var(--muted-fg); margin-top:4px; line-height:1.4; }
+.hg-tags { display:flex; gap:6px; flex-wrap:wrap; }
+.hg-tag { font-size:11px; font-weight:600; color:var(--navy); background:var(--green-lt); border:1px solid rgba(67,156,57,0.25); padding:4px 10px; border-radius:9999px; }
+
+/* ── SECTION 2 — FEATURE CARDS ── */
+#features { background:rgba(242,244,246,0.5); }
+.feat-header { text-align:center; margin-bottom:56px; }
+.feat-header h2 { max-width:720px; margin:0 auto 16px; }
+.feat-header p { font-size:17px; color:var(--muted-fg); max-width:640px; margin:0 auto; line-height:1.65; }
+.feat-grid { max-width:960px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+.feat-card {
+  background:var(--white); border-radius:var(--r-2xl); border:1px solid var(--border);
+  padding:28px 32px; transition:all .3s;
+}
+.feat-card:hover { box-shadow:0 10px 24px rgba(0,0,0,.09); border-color:rgba(67,156,57,.3); transform:translateY(-3px); }
+.feat-icon { width:48px; height:48px; border-radius:var(--r-xl); background:var(--green-10); color:var(--green); display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:18px; }
+.feat-card h3 { font-size:17px; margin-bottom:8px; }
+.feat-card p { font-size:14px; color:var(--muted-fg); line-height:1.65; }
+
+/* ── SECTION 3 — HOW IT WORKS ── */
+#process { background:rgba(242,244,246,0.5); }
+.proc-header { text-align:center; max-width:640px; margin:0 auto 56px; }
+.proc-eyebrow { font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:.06em; color:var(--muted-fg); display:block; margin-bottom:12px; }
+.proc-steps { max-width:720px; margin:0 auto; display:flex; flex-direction:column; gap:28px; }
+.step { display:flex; gap:24px; align-items:flex-start; }
+.step-badge {
+  flex-shrink:0; width:48px; height:48px; border-radius:var(--r-xl);
+  background:rgba(244,91,131,0.10); color:var(--pink);
+  display:flex; align-items:center; justify-content:center;
+  font-size:17px; font-weight:700;
+}
+.step-content h3 { font-size:17px; margin-bottom:4px; }
+.step-content p { font-size:14px; color:var(--muted-fg); line-height:1.65; }
+
+/* ── SECTION 4 — FROM INSIGHT TO ENROLLMENT ── */
+#insight { background:var(--white); }
+.insight-grid { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+.insight-left h2 { margin-bottom:20px; }
+.insight-left .lead { margin-bottom:32px; }
+.bullet-list { list-style:none; display:flex; flex-direction:column; gap:10px; margin-bottom:36px; }
+.bullet-list li { display:flex; gap:10px; align-items:flex-start; font-size:15px; color:var(--muted-fg); line-height:1.55; }
+.bullet-list li::before { content:''; flex-shrink:0; width:6px; height:6px; border-radius:50%; background:var(--green); margin-top:7px; }
+.btn-navy { display:inline-flex; align-items:center; gap:8px; background:var(--navy); color:white; font-size:16px; font-weight:600; padding:14px 28px; border-radius:var(--r); text-decoration:none; }
+.btn-navy:hover { background:var(--navy-lt); }
+.insight-right {
+  border-radius:var(--r-2xl);
+  background:linear-gradient(135deg, rgba(67,156,57,.07), var(--muted-bg), rgba(244,91,131,.05));
+  border:1px solid var(--border);
+  padding:48px;
+  display:flex; flex-direction:column; align-items:center; gap:28px;
+}
+.icon-row { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; width:100%; max-width:280px; }
+.icon-item { display:flex; flex-direction:column; align-items:center; gap:8px; }
+.icon-box { width:56px; height:56px; border-radius:var(--r-xl); background:var(--green-10); display:flex; align-items:center; justify-content:center; font-size:24px; }
+.icon-lbl { font-size:12px; font-weight:500; color:var(--muted-fg); text-align:center; }
+.insight-caption { display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600; color:var(--navy); }
+
+/* ── CASE STUDY ── */
+#case { background:rgba(242,244,246,0.5); }
+.case-inner { max-width:900px; margin:0 auto; }
+.case-card {
+  background:var(--white); border-radius:var(--r-2xl); border:1px solid var(--border);
+  padding:40px; box-shadow:0 1px 3px rgba(0,0,0,.07);
+}
+.case-tag { display:inline-block; font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--green); background:var(--green-10); padding:5px 12px; border-radius:9999px; margin-bottom:16px; }
+.case-card h3 { font-size:22px; margin-bottom:12px; }
+.case-card p { font-size:15px; color:var(--muted-fg); line-height:1.7; margin-bottom:16px; }
+.case-quote { font-style:italic; font-size:14px; color:var(--muted-fg); border-left:3px solid var(--green); padding-left:16px; margin:20px 0; }
+.case-stats { display:flex; gap:32px; padding-top:24px; border-top:1px solid var(--border); flex-wrap:wrap; }
+.cs-stat .n { font-size:28px; font-weight:800; color:var(--green); letter-spacing:-.03em; line-height:1; }
+.cs-stat .d { font-size:12px; color:var(--muted-fg); margin-top:4px; line-height:1.4; }
+
+/* ── CTA ── */
+#cta { background:var(--muted-bg); position:relative; overflow:hidden; }
+.cta-inner { max-width:640px; margin:0 auto; text-align:center; position:relative; z-index:1; }
+#cta h2 { margin-bottom:16px; }
+#cta p { font-size:18px; margin-bottom:40px; line-height:1.65; }
+.cta-btns { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+.btn-green { display:inline-flex; align-items:center; gap:8px; background:var(--green); color:white; font-size:17px; font-weight:600; padding:16px 32px; border-radius:var(--r); text-decoration:none; }
+.btn-green:hover { background:var(--green-dark); }
+.btn-outline { display:inline-flex; align-items:center; gap:8px; background:transparent; color:var(--navy); font-size:17px; font-weight:600; padding:16px 32px; border-radius:var(--r); border:1px solid rgba(63,76,120,0.2); text-decoration:none; }
+.btn-outline:hover { background:rgba(63,76,120,0.05); }
+/* decorative bg shapes */
+#cta::before, #cta::after {
+  content:''; position:absolute; border-radius:50%; opacity:.04;
+}
+#cta::before { width:600px; height:600px; background:var(--navy); top:-200px; right:-200px; }
+#cta::after  { width:400px; height:400px; background:var(--green); bottom:-150px; left:-100px; }
+
+/* ── FOOTER ── */
+footer { background:var(--navy); padding:64px 32px 40px; }
+.footer-top { max-width:1400px; margin:0 auto; display:grid; grid-template-columns:2fr 1fr 1fr 1fr 1fr; gap:48px; margin-bottom:48px; }
+.footer-logo { font-size:20px; font-weight:900; color:white; letter-spacing:-.5px; margin-bottom:12px; }
+.footer-logo span { color:#6EE7A0; }
+.footer-brand p { font-size:13px; color:rgba(255,255,255,.5); line-height:1.6; max-width:240px; }
+.footer-col h4 { font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:white; margin-bottom:14px; }
+.footer-col ul { list-style:none; display:flex; flex-direction:column; gap:9px; }
+.footer-col a { font-size:13px; color:rgba(255,255,255,.5); text-decoration:none; }
+.footer-col a:hover { color:white; }
+.footer-bottom { max-width:1400px; margin:0 auto; border-top:1px solid rgba(255,255,255,.1); padding-top:24px; display:flex; justify-content:space-between; font-size:12px; color:rgba(255,255,255,.4); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">Helix<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="#">Health Systems</a></li>
+      <li><a href="#">Providers</a></li>
+      <li><a href="#" class="active">Life Sciences</a></li>
+      <li><a href="#">Patients</a></li>
+      <li><a href="#">Company</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="#" class="btn-nav">Connect with Us</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid">
+
+    <!-- Left: Copy -->
+    <div>
+      <div class="breadcrumb">
+        <a href="#">Home</a> / <a href="#">Life Sciences</a> / <span>Prognostic Enrichment &amp; PRS</span>
+      </div>
+      <h1>Increase trial success with PRS-driven prognostic enrichment</h1>
+      <p class="hero-body">Helix builds and validates Polygenic Risk Scores to identify patients most likely to experience your endpoint — enrolling a genetically enriched population reduces sample size requirements and improves probability of trial success.</p>
+      <ul class="hero-bullets">
+        <li>
+          <svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#439c39" opacity=".15"/><path d="M5.5 9l2.5 2.5 4.5-5" stroke="#439c39" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Build and validate PRS models against linked clinico-genomic data for outcome prediction
+        </li>
+        <li>
+          <svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#439c39" opacity=".15"/><path d="M5.5 9l2.5 2.5 4.5-5" stroke="#439c39" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Target patients with 2–3× higher event rates, reducing required sample sizes
+        </li>
+        <li>
+          <svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#439c39" opacity=".15"/><path d="M5.5 9l2.5 2.5 4.5-5" stroke="#439c39" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Pre-identify high-risk patients from a consented, recontactable multi-site network
+        </li>
+        <li>
+          <svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#439c39" opacity=".15"/><path d="M5.5 9l2.5 2.5 4.5-5" stroke="#439c39" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          De-risk your protocol in real-world data before full-scale launch
+        </li>
+      </ul>
+    </div>
+
+    <!-- Right: Hero Graphic -->
+    <div class="hero-graphic">
+      <div class="hg-header">
+        <span class="hg-title">PRS Risk Stratification</span>
+        <span class="hg-badge">GenoSphere™</span>
+      </div>
+      <div class="hg-body">
+        <div class="hg-chart-label">Patient risk distribution — PRS score vs. population</div>
+        <div class="hg-chart">
+          <!-- Low risk bars (gray) -->
+          <div class="bar lo" style="height:14%"></div>
+          <div class="bar lo" style="height:22%"></div>
+          <div class="bar lo" style="height:34%"></div>
+          <div class="bar lo" style="height:50%"></div>
+          <div class="bar lo" style="height:65%"></div>
+          <div class="bar lo" style="height:76%"></div>
+          <div class="bar lo" style="height:82%"></div>
+          <!-- Transition bars -->
+          <div class="bar md" style="height:80%"></div>
+          <div class="bar md" style="height:72%"></div>
+          <div class="bar md" style="height:61%"></div>
+          <!-- High risk bars (green — enriched target) -->
+          <div class="bar hi" style="height:50%"></div>
+          <div class="bar hi" style="height:38%"></div>
+          <div class="bar hi" style="height:26%"></div>
+          <div class="bar hi" style="height:16%"></div>
+          <div class="bar hi" style="height:8%"></div>
+        </div>
+        <div class="hg-axis">
+          <span>Low risk</span>
+          <span style="color:var(--green); font-weight:600;">← Enriched cohort</span>
+          <span>High risk</span>
+        </div>
+        <hr class="hg-divider"/>
+        <div class="hg-stats">
+          <div class="hg-stat">
+            <div class="n">2–3×</div>
+            <div class="d">Higher event rates in enriched arm</div>
+          </div>
+          <div class="hg-stat">
+            <div class="n">&gt;70%</div>
+            <div class="d">PRS precision confirmed in Lp(a) study</div>
+          </div>
+        </div>
+        <div class="hg-tags">
+          <span class="hg-tag">400K+ records</span>
+          <span class="hg-tag">Multi-ancestry</span>
+          <span class="hg-tag">OMOP-Harmonized</span>
+          <span class="hg-tag">CLIA/CAP</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION 2: FEATURE CARDS -->
+<section id="features">
+  <div class="feat-header">
+    <div class="eyebrow-sm">Why Prognostic Enrichment</div>
+    <h2>Driving trial efficiency through genetic precision</h2>
+    <p>PRS-driven enrichment increases endpoint event rates, reduces sample size requirements, and improves probability of trial success — before you commit to a full-scale study.</p>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-icon">⚡</div>
+      <h3>Accelerated Timelines</h3>
+      <p>Higher event rates mean you reach the required number of events faster — shortening development cycles and the path to regulatory submission.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📉</div>
+      <h3>Reduced Sample Size</h3>
+      <p>Enrolling the highest-risk patients reduces the number of participants needed to achieve statistical significance, conserving R&amp;D capital.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📊</div>
+      <h3>Increased Statistical Power</h3>
+      <p>Genetic enrichment strengthens effect size and tightens confidence intervals — increasing probability of technical success and reducing risk of inconclusive results.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🛡</div>
+      <h3>De-risk Before Launch</h3>
+      <p>Validate your enrichment strategy against real-world clinico-genomic data before protocol lock — reducing the chance of a costly trial redesign.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: HOW IT WORKS -->
+<section id="process">
+  <div class="proc-header">
+    <span class="proc-eyebrow">How it works</span>
+    <h2>How <span class="pink">prognostic enrichment</span> works</h2>
+    <p class="lead" style="text-align:center;">A streamlined process to build, validate, and deploy PRS-driven enrichment strategies using the Helix clinico-genomic platform.</p>
+  </div>
+  <div class="proc-steps">
+    <div class="step">
+      <div class="step-badge">01</div>
+      <div class="step-content">
+        <h3>Develop &amp; Validate PRS</h3>
+        <p>Build polygenic risk scores against 400K+ Exome+® sequencing records, validating performance across ancestries and linking scores to longitudinal clinical outcomes.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-badge">02</div>
+      <div class="step-content">
+        <h3>Design Enrichment Strategy</h3>
+        <p>Model enrichment scenarios in real-world data to define genetic inclusion criteria and quantify expected gains in event rate, effect size, and sample size reduction.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-badge">03</div>
+      <div class="step-content">
+        <h3>Pre-screen &amp; Recall Patients</h3>
+        <p>Identify and pre-screen qualifying patients from our consented multi-site network. Engage participants through established recall workflows with &gt;50% recontact rates.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-badge">04</div>
+      <div class="step-content">
+        <h3>Enroll &amp; Analyze</h3>
+        <p>Operational support for enrollment, follow-up, and analysis — reducing time to full enrollment and delivering actionable results faster.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: FROM INSIGHT TO ENROLLMENT -->
+<section id="insight">
+  <div class="insight-grid">
+    <div class="insight-left">
+      <div class="eyebrow-sm">End-to-End Platform</div>
+      <h2>From genetic insight to <span class="teal">enrolled patients.</span></h2>
+      <p class="lead">Helix brings every ingredient needed to run a PRS-enriched trial — validated scores, population-scale data, an activated site network, and clinical trial execution experience.</p>
+      <ul class="bullet-list">
+        <li>400K+ consented, sequenced Exome+® records with 13+ yr avg longitudinal EHR</li>
+        <li>10+ health system partners, 9 of 10 activated for clinical trial research</li>
+        <li>IRB-approved broad consent for life sciences recontact</li>
+        <li>Analytical and operational support from design through enrollment</li>
+      </ul>
+      <a href="#" class="btn-navy">Connect with us →</a>
+    </div>
+    <div class="insight-right">
+      <div class="icon-row">
+        <div class="icon-item">
+          <div class="icon-box">🧬</div>
+          <div class="icon-lbl">Genomic Data</div>
+        </div>
+        <div class="icon-item">
+          <div class="icon-box">🔍</div>
+          <div class="icon-lbl">Patient Recall</div>
+        </div>
+        <div class="icon-item">
+          <div class="icon-box">📈</div>
+          <div class="icon-lbl">Trial Outcomes</div>
+        </div>
+      </div>
+      <div class="insight-caption">
+        <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="#439c39" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Accelerating precision clinical development
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDY -->
+<section id="case">
+  <div class="case-inner">
+    <div class="eyebrow-sm">Case Study</div>
+    <h2 style="margin-bottom:32px;">Proven in the real world</h2>
+    <div class="case-card">
+      <div class="case-tag">Cardiovascular · Lp(a)</div>
+      <h3>Enhanced Lp(a) PRS for cross-ancestry enrichment</h3>
+      <p>Helix developed an enhanced PRS for Lp(a) that performs well across diverse ancestries — addressing the well-known failure of standard Lp(a) risk scores in multi-ethnic populations that lack KIV-2 data from Exome sequencing.</p>
+      <p class="case-quote">Pre-screening with the Helix PRS has the potential to significantly reduce screening failures and accelerate trial recruitment.</p>
+      <div class="case-stats">
+        <div class="cs-stat">
+          <div class="n">&gt;70%</div>
+          <div class="d">High-PRS patients confirmed<br>with Lp(a) &gt;120</div>
+        </div>
+        <div class="cs-stat">
+          <div class="n">~20%</div>
+          <div class="d">Without pre-screening<br>have Lp(a) &gt;120</div>
+        </div>
+        <div class="cs-stat">
+          <div class="n">&gt;50%</div>
+          <div class="d">Successful recontact rate<br>at active MUSC pilot</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-inner">
+    <div class="eyebrow-sm">Get started</div>
+    <h2>Ready to accelerate your research?</h2>
+    <p>Connect with our team to learn how Helix can power your PRS development, prognostic enrichment design, and patient recruitment strategy.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-green">Connect with us →</a>
+      <a href="#" class="btn-outline">Back to Life Sciences</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">Helix<span>.</span></div>
+      <p>Making genomic medicine accessible, affordable, and actionable for everyone.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Audiences</h4>
+      <ul>
+        <li><a href="#">Health Systems</a></li>
+        <li><a href="#">Providers</a></li>
+        <li><a href="#">Patients</a></li>
+        <li><a href="#">Life Sciences</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">News</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Research</a></li>
+        <li><a href="#">Case Studies</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">HIPAA Compliance</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Helix, Inc. All rights reserved.</span>
+    <span>Helix, Exome+, and Sequence Once, Query Often are trademarks of Helix, Inc.</span>
+  </div>
+</footer>
+
+</body>
+</html>

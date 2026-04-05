@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Helix Life Sciences</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter',system-ui,sans-serif; background:#f2f4f6; display:flex; align-items:center; justify-content:center; min-height:100vh; padding:40px; }
+.wrap { max-width:640px; width:100%; text-align:center; }
+.logo { font-size:28px; font-weight:900; color:#3f4c78; letter-spacing:-0.5px; margin-bottom:8px; }
+.logo span { color:#439c39; }
+.sub { font-size:15px; color:#5d688c; margin-bottom:48px; }
+.grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.card { background:white; border-radius:16px; border:1px solid #e0e3ea; padding:32px 28px; text-decoration:none; text-align:left; transition:all .25s; box-shadow:0 2px 12px rgba(63,76,120,0.06); }
+.card:hover { transform:translateY(-4px); box-shadow:0 12px 28px rgba(63,76,120,0.12); border-color:rgba(67,156,57,0.3); }
+.card-eyebrow { font-size:11px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:#439c39; background:rgba(67,156,57,0.10); padding:4px 10px; border-radius:9999px; display:inline-block; margin-bottom:14px; }
+.card h2 { font-size:17px; font-weight:700; color:#3f4c78; line-height:1.3; margin-bottom:10px; }
+.card p { font-size:13px; color:#5d688c; line-height:1.6; }
+.arrow { display:inline-block; margin-top:16px; font-size:13px; font-weight:600; color:#439c39; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">Helix<span>.</span></div>
+  <p class="sub">Life Sciences — Solution Pages</p>
+  <div class="grid">
+    <a href="sponsored-testing.html" class="card">
+      <div class="card-eyebrow">Sponsored Testing</div>
+      <h2>Biopharma Sponsored Testing Programs</h2>
+      <p>Fund testing, accelerate diagnosis, generate evidence, and advance discovery through Helix's end-to-end sponsored testing platform.</p>
+      <div class="arrow">View page →</div>
+    </a>
+    <a href="prognostic-enrichment.html" class="card">
+      <div class="card-eyebrow">Prognostic Enrichment & PRS</div>
+      <h2>PRS-Driven Prognostic Enrichment for Clinical Trials</h2>
+      <p>Build and validate Polygenic Risk Scores to identify patients most likely to experience your endpoint — enriching trial populations and improving probability of success.</p>
+      <div class="arrow">View page →</div>
+    </a>
+  </div>
+</div>
+</body>
+</html>
