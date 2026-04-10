@@ -430,25 +430,51 @@ footer { background:var(--navy); padding:64px 32px 40px; }
       </ul>
       <a href="#" class="btn-navy">Connect with us →</a>
     </div>
-    <div class="insight-right">
-      <div class="pillar">
-        <div class="pillar-icon">🏥</div>
-        <div class="pillar-text">
-          <h4>Physician-Initiated Testing</h4>
-          <p>Empower physicians at point of care with a best-in-class sponsored testing program, accessible via EHR-integrated ordering workflows or an on-demand portal with guided clinical decision support.</p>
-        </div>
-      </div>
-      <div class="pillar">
-        <div class="pillar-icon">🧬</div>
-        <div class="pillar-text">
-          <h4>Population Genomics Network</h4>
-          <p>Analyze Helix's growing, genetically sequenced and clinically-characterized consented cohort to proactively identify at-risk patients before symptom onset — driving diagnosis upstream of clinical suspicion.</p>
-        </div>
-      </div>
-      <div class="insight-caption">
-        <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="#439c39" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Unlocking value through comprehensive patient identification
-      </div>
+    <div class="insight-right" style="justify-content:center; align-items:center;">
+      <svg viewBox="0 0 400 310" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:440px;">
+
+        <!-- ── Physician node (left) ── -->
+        <rect x="8" y="8" width="172" height="96" rx="12" fill="#3f4c78"/>
+        <circle cx="38" cy="40" r="17" fill="white" fill-opacity="0.1"/>
+        <!-- Hospital icon -->
+        <rect x="30" y="32" width="16" height="16" rx="3" fill="none" stroke="white" stroke-width="1.6"/>
+        <line x1="38" y1="32" x2="38" y2="48" stroke="white" stroke-width="1.6"/>
+        <line x1="30" y1="40" x2="46" y2="40" stroke="white" stroke-width="1.6"/>
+        <text x="62" y="36" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="white">Physician-Initiated</text>
+        <text x="62" y="50" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="rgba(255,255,255,0.75)">Testing</text>
+        <text x="16" y="74" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,0.6)">• EHR-integrated ordering</text>
+        <text x="16" y="87" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,0.6)">• Clinical decision support</text>
+        <text x="16" y="100" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,0.6)">• Best Practice Alerts</text>
+
+        <!-- ── Population node (right) ── -->
+        <rect x="220" y="8" width="172" height="96" rx="12" fill="#439c39"/>
+        <circle cx="250" cy="40" r="17" fill="white" fill-opacity="0.1"/>
+        <!-- DNA icon -->
+        <path d="M242 33 Q246 36 250 33 Q254 30 258 33" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <path d="M242 40 Q246 43 250 40 Q254 37 258 40" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <path d="M242 47 Q246 50 250 47 Q254 44 258 47" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <line x1="242" y1="33" x2="242" y2="47" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
+        <line x1="258" y1="33" x2="258" y2="47" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
+        <text x="274" y="36" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="white">Population Genomics</text>
+        <text x="274" y="50" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="rgba(255,255,255,0.75)">Network</text>
+        <text x="228" y="74" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,0.6)">• 400K+ sequenced participants</text>
+        <text x="228" y="87" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,0.6)">• Proactive at-risk detection</text>
+        <text x="228" y="100" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,0.6)">• Before symptom onset</text>
+
+        <!-- ── Converging lines ── -->
+        <path d="M94,104 C94,162 200,162 200,196" stroke="#3f4c78" stroke-width="1.8" stroke-opacity="0.35" stroke-dasharray="5 4"/>
+        <path d="M306,104 C306,162 200,162 200,196" stroke="#439c39" stroke-width="1.8" stroke-opacity="0.35" stroke-dasharray="5 4"/>
+        <!-- Junction dot -->
+        <circle cx="200" cy="180" r="4.5" fill="#439c39" fill-opacity="0.55"/>
+
+        <!-- ── Outcome node ── -->
+        <rect x="72" y="200" width="256" height="80" rx="12" fill="#2a3659"/>
+        <rect x="72" y="200" width="5" height="80" rx="2" fill="#439c39"/>
+        <text x="210" y="230" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" font-weight="700" fill="white">Comprehensive Patient</text>
+        <text x="210" y="248" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" font-weight="700" fill="#4ade80">Identification</text>
+        <text x="210" y="268" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,0.45)">30%+ diagnostic yield · 13+ yr EHR · &gt;50% recontact rate</text>
+
+      </svg>
     </div>
   </div>
 </section>
